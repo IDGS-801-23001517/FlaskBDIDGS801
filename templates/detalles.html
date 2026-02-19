@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block container %}
+<div class="container mx-auto px-4 py-8 flex justify-center items-center">
+    
+    <div class="w-full max-w-sm p-8 bg-white border border-gray-200 rounded-2xl shadow-xl transition-all duration-300 hover:shadow-2xl">
+        
+        <div class="mb-6 flex justify-center">
+            <img class="h-48 w-full object-cover transition-all duration-500 rounded-2xl cursor-pointer filter grayscale hover:grayscale-0 shadow-md" 
+                 src="https://picsum.photos/seed/{{ id }}/500/300" 
+                 alt="Foto aleatoria del alumno">
+        </div>
+
+        <div class="flex justify-between items-start mb-4">
+            <h5 class="text-xl font-medium text-gray-500">Información del Alumno</h5>
+        </div>
+
+        <div class="flex items-baseline text-gray-900 mb-6">
+            <span class="text-3xl font-extrabold tracking-tight">{{ nombre }}</span>
+            <span class="ms-2 text-xl font-medium text-gray-500">{{ apaterno }}</span>
+        </div>
+
+        <ul role="list" class="space-y-4 my-6 border-t border-gray-100 pt-6">
+            <li class="flex items-center">
+                <div class="p-2 bg-purple-50 rounded-lg me-3 text-purple-600">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/></svg>
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-xs text-gray-400 font-bold uppercase">Correo Electrónico</p>
+                    <span class="text-base font-medium text-gray-700 truncate block">{{ email }}</span>
+                </div>
+            </li>
+
+            <li class="flex items-center">
+                <div class="p-2 bg-green-50 rounded-lg me-3 text-green-600">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase">Fecha de Registro</p>
+                    <span class="text-base font-medium text-gray-700">{{ fecha }}</span>
+                </div>
+            </li>
+        </ul>
+
+        <a href="{{ url_for('index') }}" class="w-full inline-flex justify-center items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-xl text-sm px-5 py-3 text-center transition-all duration-200 transform hover:scale-[1.02] shadow-md mt-2">
+            <svg class="w-4 h-4 me-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            Volver a la lista
+        </a>
+    </div>
+
+</div>
+{% endblock %}

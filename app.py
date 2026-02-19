@@ -5,11 +5,8 @@ import forms
 from models import db, Alumnos
 
 app = Flask(__name__)
-
-# 1. Configuración PRIMERO
 app.config.from_object(DevelopmentConfig)
 
-# 2. Inicializar extensiones DESPUÉS de la configuración
 csrf = CSRFProtect(app)
 db.init_app(app)
 
@@ -27,31 +24,74 @@ def index():
         lista_alumnos = []
     return render_template("index.html", alumnos=lista_alumnos)
 
+@app.route("/detalles", methods=['GET', 'POST'])
+def detalles():
+    if request.method == 'GET':
+        id = request.args.get('id')
+        alum1 = db.session.query(Alumnos).filter(Alumnos.id == id).first()
+        
+        if alum1:
+            nombre = alum1.nombre
+            apaterno = alum1.apaterno
+            email = alum1.email
+            fecha = alum1.created_date
+        else:
+            nombre = ""
+            apaterno = ""
+            email = ""
+            fecha = ""
+
+        return render_template("detalles.html", nombre=nombre, apaterno=apaterno, email=email, fecha=fecha, id=id)
+    
+    return redirect(url_for('index'))
+
 @app.route("/alumnos", methods=['GET', 'POST'])
 def alumnos():
-    form = forms.UserForm2() # FlaskForm toma request.form automáticamente
+    form = forms.UserForm2(request.form)
     
-    if request.method == 'POST':
-        if form.validate_on_submit(): # Valida Token CSRF y datos
-            try:
-                alu = Alumnos(
-                    nombre=form.nombre.data,
-                    apaterno=form.apaterno.data,
-                    email=form.email.data
-                )
-                db.session.add(alu)
-                db.session.commit()
-                flash('Alumno registrado correctamente')
-                return redirect(url_for('index'))
-            except Exception as e:
-                db.session.rollback()
-                print(f"Error MySQL: {e}")
-                flash('Error al guardar en la base de datos')
-        else:
-            # Si falla la validación, imprime los errores en consola para depurar
-            print("Errores de validación:", form.errors)
+    if request.method == 'POST' and form.validate():
+        try:
+            alu = Alumnos(
+                nombre=form.nombre.data,
+                apaterno=form.apaterno.data,
+                email=form.email.data
+            )
+            db.session.add(alu)
+            db.session.commit()
+            flash('Alumno registrado correctamente')
+            return redirect(url_for('index'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error al guardar: {str(e)}')
+            print(f"Error: {e}")
 
     return render_template("Alumnos.html", form=form)
+
+@app.route("/modificar", methods=['GET', 'POST'])
+def modificar():
+    form = forms.UserForm2(request.form)
+    
+    if request.method == 'GET':
+        id = request.args.get('id')
+        alum1 = db.session.query(Alumnos).filter(Alumnos.id == id).first()
+        form.id.data = request.args.get('id')
+        form.nombre.data = alum1.nombre
+        form.apaterno.data = alum1.apaterno
+        form.email.data = alum1.email
+
+    if request.method == 'POST':
+        id = form.id.data
+        alum1 = db.session.query(Alumnos).filter(Alumnos.id == id).first()
+        alum1.nombre = form.nombre.data
+        alum1.apaterno = form.apaterno.data
+        alum1.email = form.email.data
+        
+        db.session.add(alum1)
+        db.session.commit()
+        flash('Alumno actualizado correctamente')
+        return redirect(url_for('index'))
+
+    return render_template("modificar.html", form=form)
 
 if __name__ == '__main__':
     with app.app_context():
