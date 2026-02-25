@@ -12,10 +12,8 @@
 
         <div class="p-8">
             <form action="/alumnos" method="POST" class="space-y-6">
-                <!-- TOKEN CSRF OBLIGATORIO -->
                 {{ form.csrf_token }}
 
-                <!-- Campo Email -->
                 <div class="relative z-0 w-full group">
                     <input type="email" name="email" id="email" 
                         value="{{ form.email.data if form.email.data else '' }}"
@@ -30,7 +28,6 @@
                 </div>
 
                 <div class="grid md:grid-cols-2 md:gap-6">
-                    <!-- Campo Nombre -->
                     <div class="relative z-0 w-full group">
                         <input type="text" name="nombre" id="nombre" 
                             value="{{ form.nombre.data if form.nombre.data else '' }}"
@@ -44,7 +41,6 @@
                         {% endif %}
                     </div>
 
-                    <!-- Campo Apellido -->
                     <div class="relative z-0 w-full group">
                         <input type="text" name="apaterno" id="apaterno" 
                             value="{{ form.apaterno.data if form.apaterno.data else '' }}"

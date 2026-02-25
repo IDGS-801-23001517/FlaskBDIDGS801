@@ -3,9 +3,11 @@ from flask_wtf.csrf import CSRFProtect
 from config import DevelopmentConfig
 import forms
 from models import db, Alumnos
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
+migrate = Migrate(app, db)
 
 csrf = CSRFProtect(app)
 db.init_app(app)
@@ -73,25 +75,65 @@ def modificar():
     
     if request.method == 'GET':
         id = request.args.get('id')
-        alum1 = db.session.query(Alumnos).filter(Alumnos.id == id).first()
-        form.id.data = request.args.get('id')
-        form.nombre.data = alum1.nombre
-        form.apaterno.data = alum1.apaterno
-        form.email.data = alum1.email
+        alumno = db.session.query(Alumnos).filter(Alumnos.id == id).first()
+        if alumno:
+            form.id.data = alumno.id
+            form.nombre.data = alumno.nombre
+            form.apaterno.data = alumno.apaterno
+            form.email.data = alumno.email
+        else:
+            flash('Alumno no encontrado')
+            return redirect(url_for('index'))
 
-    if request.method == 'POST':
-        id = form.id.data
-        alum1 = db.session.query(Alumnos).filter(Alumnos.id == id).first()
-        alum1.nombre = form.nombre.data
-        alum1.apaterno = form.apaterno.data
-        alum1.email = form.email.data
-        
-        db.session.add(alum1)
-        db.session.commit()
-        flash('Alumno actualizado correctamente')
-        return redirect(url_for('index'))
+    if request.method == 'POST' and form.validate():
+        try:
+            id = form.id.data
+            alumno = db.session.query(Alumnos).filter(Alumnos.id == id).first()
+            if alumno:
+                alumno.nombre = form.nombre.data
+                alumno.apaterno = form.apaterno.data
+                alumno.email = form.email.data
+                
+                db.session.commit() # commit aplica los cambios
+                flash('Alumno actualizado correctamente')
+            return redirect(url_for('index'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error al actualizar: {str(e)}')
 
     return render_template("modificar.html", form=form)
+
+@app.route('/eliminar', methods=['GET', 'POST'])
+def eliminar():
+    form = forms.UserForm2(request.form)
+    
+    if request.method == 'GET':
+        id = request.args.get('id')
+        alumno = db.session.query(Alumnos).filter(Alumnos.id == id).first()
+        if alumno:
+            form.id.data = alumno.id
+            form.nombre.data = alumno.nombre
+            form.apaterno.data = alumno.apaterno
+            form.email.data = alumno.email
+        else:
+            flash('Alumno no existe')
+            return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        try:
+            id = form.id.data
+            alumno = db.session.query(Alumnos).filter(Alumnos.id == id).first()
+            if alumno:
+                db.session.delete(alumno) # Elimina el objeto
+                db.session.commit()
+                flash('Registro eliminado exitosamente')
+            return redirect(url_for('index'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error al eliminar: {str(e)}')
+
+    return render_template("eliminar.html", form=form)
+
 
 if __name__ == '__main__':
     with app.app_context():
