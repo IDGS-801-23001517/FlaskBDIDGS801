@@ -2,9 +2,9 @@
 
 {% block container %}
 <div class="container mx-auto px-4 py-8 flex justify-center">
-    
+
     <div class="w-full max-w-2xl bg-neutral-primary border border-default rounded-2xl shadow-xl overflow-hidden my-8">
-        
+
         <div class="bg-neutral-secondary-soft px-8 py-6 border-b border-default">
             <h2 class="text-2xl font-bold text-heading">Registro de Alumnos</h2>
             <p class="text-body text-sm mt-1">Ingresa los datos para el nuevo registro en el sistema.</p>
@@ -14,52 +14,73 @@
             <form action="/alumnos" method="POST" class="space-y-6">
                 {{ form.csrf_token }}
 
-                <div class="relative z-0 w-full group">
-                    <input type="email" name="email" id="email" 
-                        value="{{ form.email.data if form.email.data else '' }}"
-                        class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
-                        placeholder=" " required />
-                    <label for="email" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Correo Electrónico</label>
-                    {% if form.email.errors %}
+                <div class="grid md:grid-cols-2 md:gap-6">
+                    <div class="relative z-0 w-full group">
+                        <input type="email" name="email" id="email"
+                            value="{{ form.email.data if form.email.data else '' }}"
+                            class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            placeholder=" " required />
+                        <label for="email"
+                            class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Correo
+                            Electrónico</label>
+                        {% if form.email.errors %}
                         {% for error in form.email.errors %}
-                            <p class="text-red-500 text-xs mt-1 font-medium">{{ error }}</p>
+                        <p class="text-red-500 text-xs mt-1 font-medium">{{ error }}</p>
                         {% endfor %}
-                    {% endif %}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="relative z-0 w-full group">
+                        <input type="tel" name="telefono" id="telefono"
+                            value="{{ form.telefono.data if form.telefono.data else '' }}"
+                            class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            placeholder=" " required />
+                        <label for="telefono"
+                            class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Teléfono</label>
+                        {% if form.telefono.errors %}
+                        {% for error in form.telefono.errors %}
+                        <p class="text-red-500 text-xs mt-1 font-medium">{{ error }}</p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
                 </div>
 
                 <div class="grid md:grid-cols-2 md:gap-6">
                     <div class="relative z-0 w-full group">
-                        <input type="text" name="nombre" id="nombre" 
+                        <input type="text" name="nombre" id="nombre"
                             value="{{ form.nombre.data if form.nombre.data else '' }}"
-                            class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                            class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder=" " required />
-                        <label for="nombre" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nombre(s)</label>
+                        <label for="nombre"
+                            class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nombre(s)</label>
                         {% if form.nombre.errors %}
-                            {% for error in form.nombre.errors %}
-                                <p class="text-red-500 text-xs mt-1 font-medium">{{ error }}</p>
-                            {% endfor %}
+                        {% for error in form.nombre.errors %}
+                        <p class="text-red-500 text-xs mt-1 font-medium">{{ error }}</p>
+                        {% endfor %}
                         {% endif %}
                     </div>
 
                     <div class="relative z-0 w-full group">
-                        <input type="text" name="apaterno" id="apaterno" 
-                            value="{{ form.apaterno.data if form.apaterno.data else '' }}"
-                            class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                        <input type="text" name="apellidos" id="apellidos"
+                            value="{{ form.apellidos.data if form.apellidos.data else '' }}"
+                            class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder=" " required />
-                        <label for="apaterno" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Apellido Paterno</label>
-                        {% if form.apaterno.errors %}
-                            {% for error in form.apaterno.errors %}
-                                <p class="text-red-500 text-xs mt-1 font-medium">{{ error }}</p>
-                            {% endfor %}
+                        <label for="apellidos"
+                            class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Apellidos</label>
+                        {% if form.apellidos.errors %}
+                        {% for error in form.apellidos.errors %}
+                        <p class="text-red-500 text-xs mt-1 font-medium">{{ error }}</p>
+                        {% endfor %}
                         {% endif %}
                     </div>
                 </div>
 
                 <div class="flex items-center justify-between pt-6 border-t border-default">
-                    <a href="{{ url_for('index') }}" class="text-sm font-medium text-body hover:text-blue-700 transition-colors">
+                    <a href="{{ url_for('index') }}"
+                        class="text-sm font-medium text-body hover:text-blue-700 transition-colors">
                         &larr; Cancelar
                     </a>
-                    <button type="submit" 
+                    <button type="submit"
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-xl text-sm px-10 py-3 text-center transition-all duration-200 transform hover:scale-105 shadow-md active:scale-95">
                         Registrar Alumno
                     </button>

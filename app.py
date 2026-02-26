@@ -34,16 +34,17 @@ def detalles():
         
         if alum1:
             nombre = alum1.nombre
-            apaterno = alum1.apaterno
+            apellidos = alum1.apellidos
             email = alum1.email
+            telefono = alum1.telefono
             fecha = alum1.created_date
         else:
             nombre = ""
-            apaterno = ""
+            apellidos = ""
             email = ""
             fecha = ""
 
-        return render_template("detalles.html", nombre=nombre, apaterno=apaterno, email=email, fecha=fecha, id=id)
+        return render_template("detalles.html", nombre=nombre, apellidos=apellidos, email=email, telefono=telefono, fecha=fecha, id=id)
     
     return redirect(url_for('index'))
 
@@ -55,8 +56,9 @@ def alumnos():
         try:
             alu = Alumnos(
                 nombre=form.nombre.data,
-                apaterno=form.apaterno.data,
-                email=form.email.data
+                apellidos=form.apellidos.data,
+                email=form.email.data,
+                telefono=form.telefono.data
             )
             db.session.add(alu)
             db.session.commit()
@@ -79,8 +81,9 @@ def modificar():
         if alumno:
             form.id.data = alumno.id
             form.nombre.data = alumno.nombre
-            form.apaterno.data = alumno.apaterno
+            form.apellidos.data = alumno.apellidos
             form.email.data = alumno.email
+            form.telefono.data = alumno.telefono
         else:
             flash('Alumno no encontrado')
             return redirect(url_for('index'))
@@ -91,10 +94,11 @@ def modificar():
             alumno = db.session.query(Alumnos).filter(Alumnos.id == id).first()
             if alumno:
                 alumno.nombre = form.nombre.data
-                alumno.apaterno = form.apaterno.data
+                alumno.apellidos = form.apellidos.data
                 alumno.email = form.email.data
+                alumno.telefono = form.telefono.data
                 
-                db.session.commit() # commit aplica los cambios
+                db.session.commit()
                 flash('Alumno actualizado correctamente')
             return redirect(url_for('index'))
         except Exception as e:
@@ -113,8 +117,9 @@ def eliminar():
         if alumno:
             form.id.data = alumno.id
             form.nombre.data = alumno.nombre
-            form.apaterno.data = alumno.apaterno
+            form.apellidos.data = alumno.apellidos
             form.email.data = alumno.email
+            form.telefono.data = alumno.telefono
         else:
             flash('Alumno no existe')
             return redirect(url_for('index'))
@@ -124,7 +129,7 @@ def eliminar():
             id = form.id.data
             alumno = db.session.query(Alumnos).filter(Alumnos.id == id).first()
             if alumno:
-                db.session.delete(alumno) # Elimina el objeto
+                db.session.delete(alumno)
                 db.session.commit()
                 flash('Registro eliminado exitosamente')
             return redirect(url_for('index'))

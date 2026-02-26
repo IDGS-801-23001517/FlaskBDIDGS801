@@ -15,7 +15,10 @@
         <div class="p-6 text-center">
             <p class="text-gray-600 mb-6">
                 ¿Estás seguro de que deseas eliminar permanentemente al alumno: <br>
-                <span class="font-bold text-gray-900 text-lg">{{ form.nombre.data }} {{ form.apaterno.data }}</span>?
+                <span class="font-bold text-gray-900 text-lg">
+                    {# Cambio a apellidos #}
+                    {{ form.nombre.data }} {{ form.apellidos.data }}
+                </span>?
             </p>
 
             <form method="POST" action="{{ url_for('eliminar') }}">
@@ -24,8 +27,11 @@
                 
                 <div class="hidden">
                     {{ form.nombre }}
-                    {{ form.apaterno }}
+                    {# Cambio a apellidos #}
+                    {{ form.apellidos }}
                     {{ form.email }}
+                    {# Se agrega teléfono para consistencia del form #}
+                    {{ form.telefono }}
                 </div>
 
                 <div class="flex space-x-4 justify-center">

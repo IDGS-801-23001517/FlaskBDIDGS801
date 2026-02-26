@@ -20,7 +20,7 @@
                 <thead class="text-xs uppercase bg-neutral-secondary-soft text-heading border-b border-default">
                     <tr>
                         <th class="px-6 py-4 font-bold">Nombre Completo</th>
-                        <th class="px-6 py-4 font-bold">Correo Electrónico</th>
+                        <th class="px-6 py-4 font-bold">Contacto</th>
                         <th class="px-6 py-4 font-bold text-center">Registro</th>
                         <th class="px-6 py-4 font-bold text-center">Acciones</th>
                     </tr>
@@ -30,13 +30,17 @@
                     {% for alumno in alumnos %}
                     <tr class="bg-neutral-primary hover:bg-neutral-secondary-soft/50 transition-colors duration-200">
                         <th scope="row" class="px-6 py-4 font-semibold text-heading whitespace-nowrap">
-                            {{ alumno.nombre }} {{ alumno.apaterno }}
+                            {{ alumno.nombre }} {{ alumno.apellidos }}
                         </th>
                         <td class="px-6 py-4">
-                            <span
-                                class="inline-flex items-center bg-blue-50 text-blue-700 text-xs font-medium px-2.5 py-1 rounded-lg border border-blue-100">
-                                {{ alumno.email }}
-                            </span>
+                            <div class="flex flex-col space-y-1">
+                                <span class="inline-flex items-center text-blue-700 text-xs font-medium">
+                                    {{ alumno.email }}
+                                </span>
+                                <span class="text-gray-500 text-xs italic">
+                                    {{ alumno.telefono }}
+                                </span>
+                            </div>
                         </td>
                         <td class="px-6 py-4 text-center text-gray-500">
                             {{ alumno.created_date.strftime('%d/%m/%Y') }}
@@ -74,8 +78,7 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="4" class="px-6 py-12 text-center text-gray-500 italic">No hay alumnos en el
-                            sistema.</td>
+                        <td colspan="4" class="px-6 py-12 text-center text-gray-500 italic">No hay alumnos en el sistema.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
