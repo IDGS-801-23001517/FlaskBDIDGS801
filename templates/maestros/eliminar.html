@@ -11,38 +11,25 @@
                 Confirmar Eliminación
             </h2>
         </div>
-        
         <div class="p-6 text-center">
             <p class="text-gray-600 mb-6">
-                ¿Estás seguro de que deseas eliminar permanentemente al alumno: <br>
+                ¿Estás seguro de que deseas eliminar permanentemente al maestro: <br>
                 <span class="font-bold text-gray-900 text-lg">
-                    {# Cambio a apellidos #}
                     {{ form.nombre.data }} {{ form.apellidos.data }}
                 </span>?
             </p>
-
-            <form method="POST" action="{{ url_for('eliminar') }}">
+            <form method="POST" action="{{ url_for('maestros.eliminar') }}">
                 {{ form.csrf_token }}
-                {{ form.id(type="hidden") }}
-                
+                {{ form.matricula(type="hidden") }}
                 <div class="hidden">
                     {{ form.nombre }}
-                    {# Cambio a apellidos #}
                     {{ form.apellidos }}
                     {{ form.email }}
-                    {# Se agrega teléfono para consistencia del form #}
-                    {{ form.telefono }}
+                    {{ form.especialidad }}
                 </div>
-
                 <div class="flex space-x-4 justify-center">
-                    <a href="{{ url_for('index') }}" 
-                       class="px-6 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors">
-                        Cancelar
-                    </a>
-                    <button type="submit" 
-                            class="px-6 py-2.5 text-sm font-medium text-white bg-red-600 rounded-xl hover:bg-red-700 shadow-lg shadow-red-200 transition-all transform hover:scale-105">
-                        Sí, eliminar registro
-                    </button>
+                    <a href="{{ url_for('maestros.index') }}" class="px-6 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors">Cancelar</a>
+                    <button type="submit" class="px-6 py-2.5 text-sm font-medium text-white bg-red-600 rounded-xl hover:bg-red-700 shadow-lg shadow-red-200 transition-all transform hover:scale-105">Sí, eliminar registro</button>
                 </div>
             </form>
         </div>

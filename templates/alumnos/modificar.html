@@ -11,7 +11,7 @@
         </div>
 
         <div class="p-8">
-            <form action="{{ url_for('modificar') }}" method="POST" class="space-y-6">
+            <form action="{{ url_for('alumnos.modificar') }}" method="POST" class="space-y-6">
                 {{ form.csrf_token }}
                 
                 {# Campo oculto para el ID del registro #}
@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="flex items-center justify-between pt-6 border-t border-default">
-                    <a href="{{ url_for('index') }}" class="text-sm font-medium text-body hover:text-blue-700 transition-colors">
+                    <a href="{{ url_for('alumnos.index') }}" class="text-sm font-medium text-body hover:text-blue-700 transition-colors">
                         &larr; Cancelar y Volver
                     </a>
                     <button type="submit" 
