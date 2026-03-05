@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block container %}
+<div class="container mx-auto px-4 py-8 flex justify-center">
+    <div class="w-full max-w-2xl bg-neutral-primary border border-default rounded-2xl shadow-xl overflow-hidden my-8">
+        <div class="bg-neutral-secondary-soft px-8 py-6 border-b border-default">
+            <h2 class="text-2xl font-bold text-heading">Modificar Curso</h2>
+            <p class="text-body text-sm mt-1">Actualiza los datos del curso seleccionado.</p>
+        </div>
+        <div class="p-8">
+            <form action="{{ url_for('cursos.modificar') }}" method="POST" class="space-y-6">
+                {{ form.csrf_token }}
+                {{ form.id(type="hidden") }}
+
+                <div class="relative z-0 w-full group">
+                    <input type="text" name="nombre" id="nombre" value="{{ form.nombre.data if form.nombre.data else '' }}" class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-purple-600 peer" placeholder=" " required />
+                    <label for="nombre" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-purple-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nombre del Curso</label>
+                    {% if form.nombre.errors %}
+                        {% for error in form.nombre.errors %}
+                            <p class="text-red-500 text-xs mt-1 font-medium">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="relative z-0 w-full group">
+                    <textarea name="descripcion" id="descripcion" rows="3" class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-purple-600 peer" placeholder=" ">{{ form.descripcion.data if form.descripcion.data else '' }}</textarea>
+                    <label for="descripcion" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-purple-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Descripción (Opcional)</label>
+                    {% if form.descripcion.errors %}
+                        {% for error in form.descripcion.errors %}
+                            <p class="text-red-500 text-xs mt-1 font-medium">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                
+                <div class="relative z-0 w-full group">
+                    <select name="maestro_id" id="maestro_id" class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-purple-600 peer" required>
+                        <option value="" disabled hidden></option>
+                        {% for value, label in form.maestro_id.choices %}
+                            <option value="{{ value }}" class="text-gray-900 bg-white" {% if form.maestro_id.data == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="maestro_id" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-purple-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Maestro Asignado</label>
+                    {% if form.maestro_id.errors %}
+                        {% for error in form.maestro_id.errors %}
+                            <p class="text-red-500 text-xs mt-1 font-medium">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="flex items-center justify-between pt-6 border-t border-default">
+                    <a href="{{ url_for('cursos.index') }}" class="text-sm font-medium text-body hover:text-purple-700 transition-colors">&larr; Cancelar y Volver</a>
+                    <button type="submit" class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-bold rounded-xl text-sm px-10 py-3 text-center transition-all duration-200 transform hover:scale-105 shadow-md active:scale-95">Actualizar Curso</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

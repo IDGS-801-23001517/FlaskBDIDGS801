@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block container %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+        <div class="bg-red-50 px-6 py-4 border-b border-red-100">
+            <h2 class="text-xl font-bold text-red-700 flex items-center">
+                <svg class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                Confirmar Eliminación
+            </h2>
+        </div>
+        
+        <div class="p-6 text-center">
+            <p class="text-gray-600 mb-6">
+                ¿Estás seguro de que deseas eliminar permanentemente el curso: <br>
+                <span class="font-bold text-gray-900 text-lg">
+                    {{ form.nombre.data }}
+                </span>?
+            </p>
+
+            <form method="POST" action="{{ url_for('cursos.eliminar') }}">
+                {{ form.csrf_token }}
+                {{ form.id(type="hidden") }}
+                
+                <div class="hidden">
+                    {{ form.nombre }}
+                    {{ form.descripcion }}
+                    {{ form.maestro_id }}
+                </div>
+
+                <div class="flex space-x-4 justify-center">
+                    <a href="{{ url_for('cursos.index') }}" 
+                       class="px-6 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors">
+                        Cancelar
+                    </a>
+                    <button type="submit" 
+                            class="px-6 py-2.5 text-sm font-medium text-white bg-red-600 rounded-xl hover:bg-red-700 shadow-lg shadow-red-200 transition-all transform hover:scale-105">
+                        Sí, eliminar registro
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

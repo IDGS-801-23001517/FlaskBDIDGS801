@@ -12,28 +12,19 @@ def index():
         lista_maestros = []
     return render_template("maestros/maestros.html", maestros=lista_maestros)
 
-@maestros.route("/maestros/detalles", methods=['GET', 'POST'])
+@maestros.route("/maestros/detalles", methods=['GET'])
 def detalles():
-    if request.method == 'GET':
-        matricula = request.args.get('matricula')
-        maestro = db.session.query(Maestros).filter(Maestros.matricula == matricula).first()
-        
-        if maestro:
-            nombre = maestro.nombre
-            apellidos = maestro.apellidos
-            especialidad = maestro.especialidad
-            email = maestro.email
-        else:
-            nombre = apellidos = especialidad = email = ""
-
-        return render_template("maestros/detalles.html", nombre=nombre, apellidos=apellidos, especialidad=especialidad, email=email, matricula=matricula)
+    matricula = request.args.get('matricula')
+    maestro = db.session.query(Maestros).filter(Maestros.matricula == matricula).first()
+    if maestro:
+        return render_template("maestros/detalles.html", maestro=maestro)
     
+    flash('Maestro no encontrado')
     return redirect(url_for('maestros.index'))
 
 @maestros.route("/maestros/agregar", methods=['GET', 'POST'])
 def agregar():
     form = forms.Maestro(request.form)
-    
     if request.method == 'POST' and form.validate():
         try:
             maestro = Maestros(
@@ -49,14 +40,11 @@ def agregar():
         except Exception as e:
             db.session.rollback()
             flash(f'Error al guardar: {str(e)}')
-            print(f"Error: {e}")
-
     return render_template("maestros/agregar.html", form=form)
 
 @maestros.route("/maestros/modificar", methods=['GET', 'POST'])
 def modificar():
     form = forms.Maestro(request.form)
-    
     if request.method == 'GET':
         matricula = request.args.get('matricula')
         maestro = db.session.query(Maestros).filter(Maestros.matricula == matricula).first()
@@ -79,20 +67,17 @@ def modificar():
                 maestro.apellidos = form.apellidos.data
                 maestro.especialidad = form.especialidad.data
                 maestro.email = form.email.data
-                
                 db.session.commit()
                 flash('Maestro actualizado correctamente')
             return redirect(url_for('maestros.index'))
         except Exception as e:
             db.session.rollback()
             flash(f'Error al actualizar: {str(e)}')
-
     return render_template("maestros/modificar.html", form=form)
 
 @maestros.route('/maestros/eliminar', methods=['GET', 'POST'])
 def eliminar():
     form = forms.Maestro(request.form)
-    
     if request.method == 'GET':
         matricula = request.args.get('matricula')
         maestro = db.session.query(Maestros).filter(Maestros.matricula == matricula).first()
@@ -118,5 +103,4 @@ def eliminar():
         except Exception as e:
             db.session.rollback()
             flash(f'Error al eliminar: {str(e)}')
-
     return render_template("maestros/eliminar.html", form=form)
